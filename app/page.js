@@ -1,5 +1,5 @@
 import Header from "../components/screens/Header";
-import Home from "./Home/page"
+import Home from "./home/page"
 
 export default function Page() {
   return (
