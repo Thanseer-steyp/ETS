@@ -27,6 +27,15 @@
     font-style: normal;
     font-display: swap;
 }
+@font-face {
+  font-family: 'Opal';
+  src: url('../components/fonts/OpalOrbitRegular.woff2') format('woff2'),
+      url('../components/fonts/OpalOrbitRegular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 
 
 body {
@@ -38,4 +47,12 @@ body {
   max-width: 1280px;
   width: 90%;
   margin: 0 auto;
+}
+.logo {
+  font-family: Opal;
+  font-weight: normal;
+  padding: 8px;
+  color: white;
+  border: 1px solid #facc15;
+  border-radius: 6px;
 }

@@ -1,18 +1,25 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
+import Link from "next/link";
 import { DateRange } from "react-date-range";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
-import Header from "../../components/screens/Header";
+import Image from "next/image";
+import eventImg from "../../components/assets/event.jpeg";
+import rightArrow from "../../components/assets/right-arrow-bold.svg";
+import Wallet from "../../components/assets/wallet.svg";
+import Location from "../../components/assets/location.svg";
+import Calender from "../../components/assets/calendar.svg";
 
 const EventPage = () => {
   const [location, setLocation] = useState("");
   const [filtersApplied, setFiltersApplied] = useState(false);
-  const [price, setPrice] = useState(500);
+  const [price, setPrice] = useState(1000);
   const [search, setSearch] = useState("");
   const [showCalendar, setShowCalendar] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
   const [filteredEvents, setFilteredEvents] = useState([]);
+  const [events, setEvents] = useState([]);
   const calendarRef = useRef(null);
   const today = new Date();
 
@@ -30,76 +37,96 @@ const EventPage = () => {
     },
   ]);
 
-  const allEvents = [
+  const defaultEvents = [
     {
       id: 1,
       title: "Rock Night Festival",
       location: "Mumbai",
-      date: "21-07-2025",
+      date: "21 July 2025",
       price: 700,
+      time: "5pm",
+      image: eventImg,
     },
     {
       id: 2,
       title: "Stand-up Comedy Night",
       location: "Delhi",
-      date: "22-07-2025",
+      date: "22 July 2025",
       price: 350,
+      time: "3pm",
+      image: eventImg,
     },
     {
       id: 3,
       title: "Art & Wine Evening",
       location: "Bangalore",
-      date: "25-07-2025",
+      date: "25 July 2025",
       price: 500,
+      time: "9pm",
+      image: eventImg,
     },
     {
       id: 4,
       title: "Live Jazz Concert",
       location: "Kolkata",
-      date: "08-08-2025",
+      date: "08 August 2025",
       price: 450,
+      time: "3pm",
+      image: eventImg,
     },
     {
       id: 5,
       title: "Tech Innovators Meetup",
       location: "Hyderabad",
-      date: "30-07-2025",
+      date: "30 July 2025",
       price: 600,
+      time: "7pm",
+      image: eventImg,
     },
     {
       id: 6,
       title: "Indie Music Fest",
       location: "Chennai",
-      date: "28-07-2025",
+      date: "28 July 2025",
       price: 800,
+      time: "11pm",
+      image: eventImg,
     },
     {
       id: 7,
       title: "Food Carnival",
       location: "Ahmedabad",
-      date: "19-07-2025",
+      date: "19 August 2025",
       price: 300,
+      time: "3pm",
+      image: eventImg,
     },
     {
       id: 8,
       title: "Yoga in the Park",
       location: "Pune",
-      date: "21-07-2025",
+      date: "21 July 2025",
       price: 200,
+      time: "2pm",
+      image: eventImg,
     },
     {
       id: 9,
       title: "Startup Pitch Day",
       location: "Gurgaon",
-      date: "26-07-2025",
+      date: "26 July 2025",
       price: 650,
+      time: "4pm",
+      image: eventImg,
     },
     {
       id: 10,
       title: "Book Reading by Author",
       location: "Jaipur",
-      date: "24-07-2025",
+      date: "24 July 2025",
       price: 250,
+      time: "12am",
+      image: eventImg,
     },
   ];
 
@@ -107,14 +134,14 @@ const EventPage = () => {
     const start = dateRange[0].startDate;
     const end = dateRange[0].endDate;
 
-    const filtered = allEvents.filter((event) => {
+    const filtered = events.filter((event) => {
       const matchesLocation = location
         ? event.location.toLowerCase().includes(location.toLowerCase())
         : true;
       const matchesPrice = event.price <= price;
 
-      const [day, month, year] = event.date.split("-").map(Number);
-      const eventDate = new Date(year, month - 1, day);
+      const [day, monthName, year] = event.date.split(" ");
+      const eventDate = new Date(`${monthName} ${day}, ${year}`);
 
       const matchesDate = eventDate >= start && eventDate <= end;
 
@@ -122,12 +149,12 @@ const EventPage = () => {
     });
 
     setFilteredEvents(filtered);
-    setFiltersApplied(true); // 👈 update here
+    setFiltersApplied(true);
   };
 
   const handleClearFilters = () => {
     setLocation("");
-    setPrice(500);
+    setPrice(1000);
     setDateRange([
       {
         startDate: new Date("01-07-2025"),
@@ -135,13 +162,37 @@ const EventPage = () => {
         key: "selection",
       },
     ]);
-    setFilteredEvents(allEvents);
+    setFilteredEvents(events);
     setFiltersApplied(false); // 👈 update here
   };
 
   useEffect(() => {
-    setFilteredEvents(allEvents);
-  }, []);
+    if (events.length === 0) return;
+
+    const parseTime = (t) => {
+      const hour = parseInt(t);
+      const isPM = t.toLowerCase().includes("pm");
+      return (hour % 12) + (isPM ? 12 : 0);
+    };
+
+    const sorted = [...events].sort((a, b) => {
+      const [aDay, aMonthName, aYear] = a.date.split(" ");
+      const [bDay, bMonthName, bYear] = b.date.split(" ");
+
+      const aHour = parseTime(a.time);
+      const bHour = parseTime(b.time);
+
+      const aDateTime = new Date(`${aMonthName} ${aDay}, ${aYear}`);
+      aDateTime.setHours(aHour);
+
+      const bDateTime = new Date(`${bMonthName} ${bDay}, ${bYear}`);
+      bDateTime.setHours(bHour);
+
+      return aDateTime - bDateTime;
+    });
+
+    setFilteredEvents(sorted);
+  }, [events]); // 👈 runs after events are loaded
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -153,9 +204,13 @@ const EventPage = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  useEffect(() => {
+    const localEvents = JSON.parse(localStorage.getItem("events") || "[]");
+    setEvents([...defaultEvents, ...localEvents]);
+  }, []);
+
   return (
     <>
-      <Header />
       <div className="bg-[#0B1C2D] text-white min-h-screen">
         <div className="wrapper flex">
           <div className="w-full lg:w-[20%] p-4 border border-gray-700 rounded-md h-max mt-4 space-y-6">
@@ -257,7 +312,7 @@ const EventPage = () => {
           </div>
 
           {/* Right: Event List */}
-          <div className="w-full lg:w-[60%] pl-6 space-y-6">
+          <div className="w-full lg:w-[80%] pl-6 space-y-6">
             <div className="flex justify-between items-center mt-4">
               <h2 className="text-5xl font-bold">Events</h2>
               <input
@@ -275,23 +330,80 @@ const EventPage = () => {
                   event.title.toLowerCase().includes(search.toLowerCase())
                 )
                 .sort((a, b) => {
-                  const [aDay, aMonth, aYear] = a.date.split("-").map(Number);
-                  const [bDay, bMonth, bYear] = b.date.split("-").map(Number);
+                  const [aDay, aMonthName, aYear] = a.date.split(" ");
+                  const [bDay, bMonthName, bYear] = b.date.split(" ");
 
-                  const aDate = new Date(aYear, aMonth - 1, aDay);
-                  const bDate = new Date(bYear, bMonth - 1, bDay);
+                  const aDateTime = new Date(`${aMonthName} ${aDay}, ${aYear}`);
+                  const bDateTime = new Date(`${bMonthName} ${bDay}, ${bYear}`);
 
-                  return aDate - bDate; // use bDate - aDate for descending
+                  return aDateTime - bDateTime;
                 })
+
                 .map((event, index) => (
                   <div
                     key={index}
-                    className="bg-[#1a2942] p-4 rounded-lg hover:bg-[#24344e] transition"
+                    className="bg-[#1a2942] flex p-4 h-[150px] rounded-lg hover:bg-[#24344e] transition-transform duration-300 transform hover:-translate-x-2 "
                   >
-                    <h3 className="text-lg font-semibold">{event.title}</h3>
-                    <p className="text-sm text-gray-300">
-                      {event.date} -- {event.location} -- ₹{event.price}
-                    </p>
+                    <Image
+                      src={event.image}
+                      alt={event.title}
+                      className="w-1/5 rounded-md block mr-4"
+                      width={150}
+                      height={100}
+                    />
+                    <div className="h-full flex flex-col justify-between">
+                      <h3 className="text-xl font-semibold">{event.title}</h3>
+                      <p className="text-md text-gray-300 flex items-center w-max">
+                        <Image
+                          src={Location}
+                          alt="Wallet-Icon"
+                          className="w-3 block mr-2"
+                        />
+                        {event.location}
+                      </p>
+                      <p className="text-md text-gray-300 flex items-center w-max">
+                        {" "}
+                        <Image
+                          src={Calender}
+                          alt="Calender-Icon"
+                          className="w-3 block mr-2"
+                        />
+                        {event.date}
+                      </p>
+
+                      <p className="text-md text-gray-300 flex items-center w-max">
+                        {" "}
+                        <Image
+                          src={Wallet}
+                          alt="Wallet-Icon"
+                          className="w-3 block mr-2"
+                        />
+                        {event.price}
+                      </p>
+                    </div>
+                    <div className="text-lg ml-auto flex flex-col justify-between h-full">
+                      <p className="flex items-center justify-end text-2xl">
+                        {(() => {
+                          const parts = event.date?.split(" ");
+                          if (parts?.length >= 2) {
+                            return `${parts[0]} ${parts[1].slice(0, 3)}`;
+                          }
+                          return "Date";
+                        })()}
+                        <Image
+                          src={rightArrow}
+                          alt="arrow"
+                          className="w-2 block ml-3"
+                        />
+                      </p>
+
+                      <Link
+                        href={`/events/${event.id}`}
+                        className="bg-yellow-400 text-black px-6 py-2 rounded-md font-semibold hover:bg-yellow-500 transition"
+                      >
+                        Buy Tickets
+                      </Link>
+                    </div>
                   </div>
                 ))}
             </div>

@@ -16,7 +16,7 @@ function Authentication() {
             onClick={() => setIsLogin(true)}
             className={`w-1/2 py-2 text-lg font-semibold rounded-lg transition-all duration-300 ${
               isLogin
-                ? "bg-[#fab641] text-black shadow-md"
+                ? "bg-yellow-400 text-black shadow-md"
                 : "text-gray-400 hover:text-white"
             }`}
           >
@@ -26,7 +26,7 @@ function Authentication() {
             onClick={() => setIsLogin(false)}
             className={`w-1/2 py-2 text-lg font-semibold rounded-lg transition-all duration-300 ${
               !isLogin
-                ? "bg-[#fab641] text-black shadow-md"
+                ? "bg-yellow-400 text-black shadow-md"
                 : "text-gray-400 hover:text-white"
             }`}
           >
@@ -59,14 +59,14 @@ function Authentication() {
                 <button
                   type="button"
                   onClick={toggleForm}
-                  className="text-[#fab641] hover:underline"
+                  className="text-yellow-400 hover:underline"
                 >
                   Sign up
                 </button>
               </p>
               <button
                 type="submit"
-                className="w-full py-2 bg-[#fab641] text-black font-semibold rounded"
+                className="w-full py-2 bg-yellow-400 text-black font-semibold rounded"
               >
                 Log in
               </button>
@@ -105,14 +105,14 @@ function Authentication() {
                 <button
                   type="button"
                   onClick={toggleForm}
-                  className="text-[#fab641] hover:underline"
+                  className="text-yellow-400 hover:underline"
                 >
                   Log in
                 </button>
               </p>
               <button
                 type="submit"
-                className="w-full py-2 bg-[#fab641] text-black font-semibold rounded"
+                className="w-full py-2 bg-yellow-400 text-black font-semibold rounded"
               >
                 Create Account
               </button>
