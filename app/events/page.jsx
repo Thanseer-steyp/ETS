@@ -19,6 +19,7 @@ const EventPage = () => {
   const [showCalendar, setShowCalendar] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
   const [filteredEvents, setFilteredEvents] = useState([]);
+  const [dateSelected, setDateSelected] = useState(false);
   const [events, setEvents] = useState([]);
   const calendarRef = useRef(null);
   const today = new Date();
@@ -157,12 +158,13 @@ const EventPage = () => {
     setPrice(1000);
     setDateRange([
       {
-        startDate: new Date("01-07-2025"),
-        endDate: new Date("08-31-2025"),
+        startDate: new Date(),
+        endDate: new Date(),
         key: "selection",
       },
     ]);
     setFilteredEvents(events);
+    setDateSelected(false);
     setFiltersApplied(false); // 👈 update here
   };
 
@@ -228,18 +230,32 @@ const EventPage = () => {
                   </span>
                 </div>
               </button>
-              <span className="text-sm block mt-2 mx-auto text-gray-300 w-max">
-                {dateRange[0].startDate.toLocaleDateString()} -{" "}
-                {dateRange[0].endDate.toLocaleDateString()}
-              </span>
+              {dateSelected && (
+                <span className="text-sm block mt-2 mx-auto text-gray-300 w-max">
+                  {[dateRange[0].startDate, dateRange[0].endDate]
+                    .map(
+                      (d) =>
+                        `${d.getDate().toString().padStart(2, "0")}-${(
+                          d.getMonth() + 1
+                        )
+                          .toString()
+                          .padStart(2, "0")}-${d.getFullYear()}`
+                    )
+                    .join(" - ")}
+                </span>
+              )}
 
               {showCalendar && (
                 <div className="absolute mt-2 z-20">
                   <DateRange
                     editableDateInputs={true}
-                    onChange={(item) => setDateRange([item.selection])}
+                    onChange={(item) => {
+                      setDateRange([item.selection]);
+                      setDateSelected(true);
+                    }}
                     moveRangeOnFirstSelection={false}
                     ranges={dateRange}
+                    minDate={new Date()} // ⬅️ This restricts selection to today or later
                     className="rounded-md"
                   />
                 </div>
