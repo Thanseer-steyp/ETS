@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -8,25 +8,17 @@ function Header() {
 
   return (
     <header className="bg-[#0b1c2d] w-full py-4 border-b border-gray-700">
-      <div className="wrapper">
+      <div className="px-6">
         <div className="flex items-center justify-between">
           <h1>
             <Link href="/">
               <div className="flex items-center">
-                <div className="logo mr-4 text-3xl">
-                  Eventify
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-white text-lg font-semibold">Eventify</span>
-                  <span className="text-white text-xs font-normal">
-                    Event Ticketing App
-                  </span>
-                </div>
+                <div className="logo mr-4 text-3xl">Eventify</div>
               </div>
             </Link>
           </h1>
 
-          <ul className="flex justify-center items-center gap-8">
+          <ul className="flex justify-center items-center gap-12">
             <li>
               <Link
                 href="/"
@@ -64,9 +56,19 @@ function Header() {
                 Create Events
               </Link>
             </li>
+          </ul>
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 border border-gray-400 p-3 rounded-lg w-[400px]">
+                <img src="/glass.svg" alt="" className="w-3" />
+                <input
+                  type="text"
+                  className="focus:outline-none w-full"
+                  placeholder="Search for events, shows and programmes"
+                />
+            </div>
 
             <li>
-              <Link
+              {/* <Link
                 href="/authentication"
                 className={`pb-1 border-b-2 transition-all duration-200 ${
                   pathname === "/authentication"
@@ -75,9 +77,15 @@ function Header() {
                 }`}
               >
                 Dashboard
+              </Link> */}
+              <Link
+                href="/authentication"
+                className="p-3.5 bg-gray-400 block w-full rounded-full"
+              >
+                <img src="/user-solid.svg" alt="" className="w-5 h-5" />
               </Link>
             </li>
-          </ul>
+          </div>
         </div>
       </div>
     </header>

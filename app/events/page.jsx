@@ -214,7 +214,7 @@ const EventPage = () => {
   return (
     <>
       <div className="bg-[#0B1C2D] text-white min-h-screen">
-        <div className="wrapper flex">
+        <div className="wrapper flex pb-5">
           <div className="w-full lg:w-[20%] p-4 border border-gray-700 rounded-md h-max mt-4 space-y-6">
             <h2 className="text-xl font-bold mb-2">Filter Events</h2>
             <div className="relative" ref={calendarRef}>

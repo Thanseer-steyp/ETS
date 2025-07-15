@@ -29,7 +29,12 @@ function LoopCarousel() {
   };
 
   return (
-    <div className="relative h-[calc(100vh-87px)] overflow-hidden bg-[#0b1c2d] flex items-center justify-center">
+    <div className='bg-[#0b1c2d]'>
+      <div className="wrapper ">
+      <h2 className=''>Popular events</h2>
+      </div>
+      <div className="relative h-[calc(100vh-87px)] overflow-hidden bg-[#0b1c2d] flex items-center justify-center">
+      <h1>popular events</h1>
       {/* 🔁 All Slides Positioned Absolutely */}
       {carouselImages.map((image, i) => (
         <div
@@ -43,7 +48,7 @@ function LoopCarousel() {
             src={image.src}
             alt={image.alt}
             fill
-            className="object-cover rounded-xl opacity-50"
+            className="object-cover rounded-xl"
           />
         </div>
       ))}
@@ -75,6 +80,7 @@ function LoopCarousel() {
           />
         ))}
       </div> */}
+    </div>
     </div>
   );
 }

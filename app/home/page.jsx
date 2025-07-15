@@ -4,6 +4,8 @@
 import Link from 'next/link';
 
 import LoopCarousel from "../../components/screens/LoopCarousel"
+import Stats from "../../components/screens/Stats"
+import Feature from '../../components/screens/Feature';
 
 
 
@@ -14,7 +16,7 @@ function Home() {
 
       {/* ✅ Content only for center image inside wrapper */}
       <div className="bg-[#0b1c2d]">
-        <div className="wrapper text-white flex flex-col gap-6 items-start py-36">
+        <div className="wrapper text-white flex flex-col gap-6 items-start py-52">
           <h1 className="text-5xl md:text-7xl font-semibold w-full md:w-2/3">
             Discover And Book Events Near You
           </h1>
@@ -40,7 +42,10 @@ function Home() {
         ))}
       </div> */}
 
-      <LoopCarousel />
+      {/* <LoopCarousel /> */}
+
+      <Stats />
+      <Feature />
 
     </>
   );
